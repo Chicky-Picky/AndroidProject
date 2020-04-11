@@ -9,7 +9,7 @@
 
 
     <com.example.androidapplication.views.CustomView
-        android:id="@+id/emotionalFaceView"
+        android:id="@+id/customView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
