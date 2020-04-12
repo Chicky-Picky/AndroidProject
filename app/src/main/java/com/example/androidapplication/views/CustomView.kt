@@ -7,11 +7,6 @@ import android.view.View
 
 
 class CustomView(context: Context, attrs: AttributeSet) : View(context, attrs) {
-    private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-    private var drawingFieldColor = Color.WHITE
-    private var borderColor = Color.BLACK
-    private var borderWidth = 4.0f
-    private var size = 320
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
