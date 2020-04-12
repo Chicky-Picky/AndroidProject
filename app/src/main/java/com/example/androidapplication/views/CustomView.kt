@@ -7,21 +7,13 @@ import android.view.View
 
 
 class CustomView(context: Context, attrs: AttributeSet) : View(context, attrs) {
-    // Paint object for coloring and styling
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-
-    // Some colors for the face background, eyes and mouth.
     private var drawingFieldColor = Color.WHITE
     private var borderColor = Color.BLACK
-
-    // Face border width in pixels
     private var borderWidth = 4.0f
-
-    // View size in pixels
     private var size = 320
 
     override fun onDraw(canvas: Canvas) {
-        // call the super method to keep any drawing from the parent side.
         super.onDraw(canvas)
 
         createDrawingField(canvas)
@@ -31,12 +23,6 @@ class CustomView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
 
 private fun createDrawingField(canvas: Canvas) {
-
-    // создаем пустой прямоугольник и задаем координаты верхней левой и нижней правой точек
-
-
-
-
 
     val width = width.toFloat()
     val height = height.toFloat()
@@ -56,9 +42,7 @@ private fun createDrawingField(canvas: Canvas) {
     canvas.drawRoundRect(rect, 100F, 100F, paint)
 
 
-}
-
-    
+    }
 
 
 
