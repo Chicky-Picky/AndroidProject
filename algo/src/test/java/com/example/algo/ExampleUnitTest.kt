@@ -11,7 +11,7 @@ class CreateLineSegmentTests {
             Point(5.0, 37.0), Point(7.0, 53.0), Point(10.0, 77.0),
             Point(13.0, 101.0), Point(15.0, 117.0), Point(19.0, 149.0))
 
-        assertEquals(segment, createLineSegment(points))
+        assertEquals(segment, VectorizationImpl().vectorize(points))
     }
 
     @Test
@@ -22,7 +22,7 @@ class CreateLineSegmentTests {
             Point(5.0, 37.02), Point(7.0, 53.034), Point(10.0, 77.0),
             Point(13.0, 100.95), Point(15.0, 117.0), Point(19.0, 149.0))
 
-        assertEquals(segment, createLineSegment(points))
+        assertEquals(segment, VectorizationImpl().vectorize(points))
     }
 
     @Test
@@ -35,7 +35,7 @@ class CreateLineSegmentTests {
             Point(14.0, 109.55), Point(15.0, 119.05), Point(16.0, 127.25),
             Point(17.0, 132.6), Point(18.0, 139.85), Point(19.0, 148.3))
 
-        assertEquals(Undefined, createLineSegment(points))
+        assertEquals(Undefined, VectorizationImpl().vectorize(points))
     }
 
     @Test
@@ -43,6 +43,6 @@ class CreateLineSegmentTests {
         val segment = LineSegment(Point(0.0, 0.0), Point(0.0, 0.0))
         val points: List<Point> = listOf()
 
-        assertEquals(segment, createLineSegment(points))
+        assertEquals(segment, VectorizationImpl().vectorize(points))
     }
 }
