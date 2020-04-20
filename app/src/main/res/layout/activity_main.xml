@@ -8,13 +8,6 @@
     tools:context=".MainActivity">
 
 
-    <com.example.androidapplication.views.CustomView
-        android:id="@+id/customView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        tools:layout_editor_absoluteX="-66dp"
-        tools:layout_editor_absoluteY="-48dp" />
 
 
 
