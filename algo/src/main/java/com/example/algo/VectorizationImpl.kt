@@ -1,7 +1,5 @@
 package com.example.algo
 
-object Undefined: BaseShape
-
 class VectorizationImpl : Vectorization {
     override fun vectorize(points: List<Point>): BaseShape {
         var sumx = 0.0
