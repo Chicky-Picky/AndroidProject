@@ -4,4 +4,6 @@ interface BaseShape
 
 object Undefined: BaseShape
 
-data class LineSegment(val point1: Point, val point2: Point) : BaseShape
+data class LineSegment(val point1: Point, val point2: Point) : BaseShape {
+    fun accept(visitor: ShapeVisitor) = visitor.visit(this)
+}
