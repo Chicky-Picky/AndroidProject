@@ -2,6 +2,7 @@ package com.example.androidapplication.views
 
 import android.content.Context
 import android.graphics.*
+import android.icu.util.ValueIterator
 import android.os.Build
 import android.view.MotionEvent
 import android.view.View
@@ -13,12 +14,10 @@ import com.example.androidapplication.R
 
 private const val STROKE_WIDTH = 12f
 class MyCanvasView(context: Context) : View(context) {
-    //public var listOfListOfPoints = Array<Array<Point>>(100, {i -> Array(10000, {i -> com.example.algo.Point(0.0, 0.0)})})
-    public var listOfListOfPoints = Array<Array<Point>>(100) { i -> Array(10000) { i -> com.example.algo.Point(0.0, 0.0)} }
+    public var listOfListOfPoints = Array<ArrayList<Point>>(100) {i -> arrayListOf()}
     private var currentNumberOfPoints = 0
     private var currentNumberOfLists = 0
     private var path = Path()
-
     private val drawColor = ResourcesCompat.getColor(resources, R.color.colorPaint, null)
     private val backgroundColor = ResourcesCompat.getColor(resources, R.color.colorBackground, null)
     private lateinit var extraCanvas: Canvas
@@ -82,21 +81,18 @@ class MyCanvasView(context: Context) : View(context) {
         path.moveTo(motionTouchEventX, motionTouchEventY)
         currentNumberOfLists++
         currentNumberOfPoints = 1
-        listOfListOfPoints[currentNumberOfLists][currentNumberOfPoints].x = motionTouchEventX.toDouble()
-        listOfListOfPoints[currentNumberOfLists][currentNumberOfPoints].y = motionTouchEventY.toDouble()
+        listOfListOfPoints[currentNumberOfLists].add(Point(motionTouchEventX.toDouble(), motionTouchEventY.toDouble()))
     }
 
     private fun touchMove() {
-        val px = listOfListOfPoints[currentNumberOfLists][currentNumberOfPoints].x
-        val py = listOfListOfPoints[currentNumberOfLists][currentNumberOfPoints].y
-        val dx = Math.abs(motionTouchEventX - px)
-        val dy = Math.abs(motionTouchEventY - py)
+        val p = listOfListOfPoints[currentNumberOfLists].get(currentNumberOfPoints - 1)
+        val dx = Math.abs(motionTouchEventX - p.x.toFloat())
+        val dy = Math.abs(motionTouchEventY - p.y.toFloat())
         if (dx >= touchTolerance || dy >= touchTolerance) {
-            path.quadTo(px.toFloat(), py.toFloat(), (motionTouchEventX + px.toFloat()) / 2, (motionTouchEventY + py.toFloat()) / 2)
+            path.quadTo(p.x.toFloat(), p.y.toFloat(), (motionTouchEventX + p.x.toFloat()) / 2, (motionTouchEventY + p.y.toFloat()) / 2)
 
             currentNumberOfPoints++
-            listOfListOfPoints[currentNumberOfLists][currentNumberOfPoints].x = motionTouchEventX.toDouble()
-            listOfListOfPoints[currentNumberOfLists][currentNumberOfPoints].y = motionTouchEventY.toDouble()
+            listOfListOfPoints[currentNumberOfLists].add(Point(motionTouchEventX.toDouble(), motionTouchEventY.toDouble()))
             extraCanvas.drawPath(path, paint)
         }
         invalidate()
@@ -104,10 +100,9 @@ class MyCanvasView(context: Context) : View(context) {
 
     private fun touchUp() {
         path.reset()
-        for (i in 1 until listOfListOfPoints[currentNumberOfLists].size){
-            val px = listOfListOfPoints[currentNumberOfLists][i].x
-            val py = listOfListOfPoints[currentNumberOfLists][i].y
-            extraCanvas.drawCircle(px.toFloat(), py.toFloat(), 2f, paint2)
+        for (i in 0 until listOfListOfPoints[currentNumberOfLists].size){
+            val p = listOfListOfPoints[currentNumberOfLists].get(i)
+            extraCanvas.drawCircle(p.x.toFloat(), p.y.toFloat(), 2f, paint2)
             }
     }
 }
