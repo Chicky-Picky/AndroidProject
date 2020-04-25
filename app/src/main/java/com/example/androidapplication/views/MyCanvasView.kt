@@ -12,16 +12,13 @@ import androidx.core.content.res.ResourcesCompat
 import com.example.algo.Point
 import com.example.androidapplication.R
 
-private const val STROKE_WIDTH = 12f
+private const val STROKE_WIDTH = 38f
 class MyCanvasView(context: Context) : View(context) {
     public var listOfListOfPoints = Array<ArrayList<Point>>(100) {i -> arrayListOf()}
     private var currentNumberOfPoints = 0
     private var currentNumberOfLists = 0
     private var path = Path()
     private val drawColor = ResourcesCompat.getColor(resources, R.color.colorPaint, null)
-    private val backgroundColor = ResourcesCompat.getColor(resources, R.color.colorBackground, null)
-    private lateinit var extraCanvas: Canvas
-    private lateinit var extraBitmap: Bitmap
 
     private val paint = Paint().apply {
         color = drawColor
@@ -33,15 +30,6 @@ class MyCanvasView(context: Context) : View(context) {
         strokeWidth = STROKE_WIDTH
     }
 
-    private val paint2 = Paint().apply {
-        color = Color.RED
-        isAntiAlias = true
-        isDither = true
-        style = Paint.Style.STROKE
-        strokeJoin = Paint.Join.ROUND
-        strokeCap = Paint.Cap.ROUND
-        strokeWidth = STROKE_WIDTH
-    }
 
     private val touchTolerance = ViewConfiguration.get(context).scaledTouchSlop
 
@@ -49,19 +37,6 @@ class MyCanvasView(context: Context) : View(context) {
     private var motionTouchEventX = 0f
     private var motionTouchEventY = 0f
 
-    override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
-        super.onSizeChanged(width, height, oldWidth, oldHeight)
-
-        if (::extraBitmap.isInitialized) extraBitmap.recycle()
-        extraBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-        extraCanvas = Canvas(extraBitmap)
-        extraCanvas.drawColor(backgroundColor)
-
-    }
-
-    override fun onDraw(canvas: Canvas) {
-        canvas.drawBitmap(extraBitmap, 0f, 0f, null)
-    }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
         motionTouchEventX = event.x
@@ -76,8 +51,13 @@ class MyCanvasView(context: Context) : View(context) {
     }
 
 
+    override fun onDraw(canvas: Canvas) {
+        super.onDraw(canvas)
+        canvas.drawPath(path, paint)
+    }
+
+
     private fun touchStart() {
-        path.reset()
         path.moveTo(motionTouchEventX, motionTouchEventY)
         currentNumberOfLists++
         currentNumberOfPoints = 1
@@ -93,17 +73,13 @@ class MyCanvasView(context: Context) : View(context) {
 
             currentNumberOfPoints++
             listOfListOfPoints[currentNumberOfLists].add(Point(motionTouchEventX.toDouble(), motionTouchEventY.toDouble()))
-            extraCanvas.drawPath(path, paint)
+            invalidate()
+
         }
-        invalidate()
     }
 
     private fun touchUp() {
-        path.reset()
-        for (i in 0 until listOfListOfPoints[currentNumberOfLists].size){
-            val p = listOfListOfPoints[currentNumberOfLists].get(i)
-            extraCanvas.drawCircle(p.x.toFloat(), p.y.toFloat(), 2f, paint2)
-            }
+        invalidate()
     }
 }
 
