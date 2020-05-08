@@ -2,31 +2,26 @@ package com.example.androidapplication.views
 
 import android.content.Context
 import android.graphics.*
-import android.icu.util.ValueIterator
-import android.os.Build
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
-import androidx.annotation.RequiresApi
 import androidx.core.content.res.ResourcesCompat
 import com.example.algo.*
 import com.example.algo.Point
 import com.example.androidapplication.R
-import com.example.algo.ShapeVisitor
-import com.example.androidapplication.LinePoints
 import com.example.androidapplication.ShapeType
 import com.example.androidapplication.Points
+import kotlin.math.abs
 
 
 private const val STROKE_WIDTH = 38f
 class MyCanvasView(context: Context) : View(context) {
-    private var listOfListOfPoints = Array<ArrayList<Point>>(100) {i -> arrayListOf()}
+    private var listOfListOfPoints = ArrayList<ArrayList<Point>>()
     private var currentNumberOfPoints = 0
-    private var currentNumberOfLists = 0
+    private var currentNumberOfLists = -1
     private var path = Path()
     private val drawColor = ResourcesCompat.getColor(resources, R.color.colorPaint, null)
     private var vector = VectorizationImpl()
-    private var flazhok = 0
 
 
 
@@ -76,28 +71,35 @@ class MyCanvasView(context: Context) : View(context) {
 
 
     override fun onDraw(canvas: Canvas) {
-        if (flazhok == 0)
+
+        canvas.drawPath(path, paint)
+        for (i in 0 until Points.shapes.size)
         {
-            canvas.drawPath(path, paint)
+            if (Points.shapes[i].size <= 1)
+            {
+                //Relax
+            }
+            if (Points.shapes[i].size == 2)
+            {
+                canvas.drawLine(Points.shapes[i][0].x.toFloat(), Points.shapes[i][0].y.toFloat(), Points.shapes[i][1].x.toFloat(), Points.shapes[i][1].y.toFloat(), paint2)
+            }
         }
-        if (flazhok != 1) {
-            vector.vectorize(listOfListOfPoints[currentNumberOfLists]).accept(ShapeType())
-            canvas.drawLine(LinePoints.coordinates[0], LinePoints.coordinates[1], LinePoints.coordinates[2], LinePoints.coordinates[3], paint2)
-        }
+
     }
 
 
     private fun touchStart() {
         path.moveTo(motionTouchEventX, motionTouchEventY)
+        listOfListOfPoints.add(arrayListOf())
         currentNumberOfLists++
         currentNumberOfPoints = 1
         listOfListOfPoints[currentNumberOfLists].add(Point(motionTouchEventX.toDouble(), motionTouchEventY.toDouble()))
     }
 
     private fun touchMove() {
-        val p = listOfListOfPoints[currentNumberOfLists].get(currentNumberOfPoints - 1)
-        val dx = Math.abs(motionTouchEventX - p.x.toFloat())
-        val dy = Math.abs(motionTouchEventY - p.y.toFloat())
+        val p = listOfListOfPoints[currentNumberOfLists][currentNumberOfPoints - 1]
+        val dx = abs(motionTouchEventX - p.x.toFloat())
+        val dy = abs(motionTouchEventY - p.y.toFloat())
         if (dx >= touchTolerance || dy >= touchTolerance) {
             invalidate()
             path.quadTo(p.x.toFloat(), p.y.toFloat(), (motionTouchEventX + p.x.toFloat()) / 2, (motionTouchEventY + p.y.toFloat()) / 2)
@@ -111,9 +113,14 @@ class MyCanvasView(context: Context) : View(context) {
 
 
     private fun touchUp() {
-        flazhok = 1
+        val p = listOfListOfPoints[currentNumberOfLists][currentNumberOfPoints - 1]
+        path.quadTo(p.x.toFloat(), p.y.toFloat(), (motionTouchEventX + p.x.toFloat()) / 2, (motionTouchEventY + p.y.toFloat()) / 2)
+
+        currentNumberOfPoints++
+        listOfListOfPoints[currentNumberOfLists].add(Point(motionTouchEventX.toDouble(), motionTouchEventY.toDouble()))
+
+        vector.vectorize(listOfListOfPoints[currentNumberOfLists]).accept(ShapeType())
         invalidate()
-        flazhok = 0
     }
 }
 
