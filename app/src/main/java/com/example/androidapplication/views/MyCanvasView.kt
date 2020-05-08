@@ -75,11 +75,7 @@ class MyCanvasView(context: Context) : View(context) {
         canvas.drawPath(path, paint)
         for (i in 0 until Points.shapes.size)
         {
-            if (Points.shapes[i].size <= 1)
-            {
-                //Relax
-            }
-            if (Points.shapes[i].size == 2)
+            if (Points.shapeType[i] == "lineSegment")
             {
                 canvas.drawLine(Points.shapes[i][0].x.toFloat(), Points.shapes[i][0].y.toFloat(), Points.shapes[i][1].x.toFloat(), Points.shapes[i][1].y.toFloat(), paint2)
             }

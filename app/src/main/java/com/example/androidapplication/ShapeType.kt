@@ -14,9 +14,10 @@ class ShapeType : ShapeVisitor {
 
     override fun visit(lineSegment: LineSegment) {
         val x = ArrayList<Point>()
+        val s = "lineSegment"
         x.add(Point(lineSegment.point1.x, lineSegment.point1.y))
         x.add(Point(lineSegment.point2.x, lineSegment.point2.y))
-        Points.redef(x)
+        Points.redef(x, s)
     }
 
 }
