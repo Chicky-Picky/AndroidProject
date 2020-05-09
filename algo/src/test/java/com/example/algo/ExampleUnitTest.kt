@@ -2,8 +2,11 @@ package com.example.algo
 
 import org.junit.Test
 import org.junit.Assert.*
+import kotlin.math.PI
+import kotlin.math.cos
+import kotlin.math.sin
 
-class CreateLineSegmentTests {
+class CreateShapeTests {
     @Test
     fun pointsOnLineSegment() {
         val segment = LineSegment(Point(0.0, -3.0), Point(19.0, 149.0))
@@ -34,6 +37,56 @@ class CreateLineSegmentTests {
             Point(11.0, 84.75), Point(12.0, 94.55), Point(13.0, 99.85),
             Point(14.0, 109.55), Point(15.0, 119.05), Point(16.0, 127.25),
             Point(17.0, 132.6), Point(18.0, 139.85), Point(19.0, 148.3))
+
+        assertEquals(Undefined, VectorizationImpl().vectorize(points))
+    }
+
+    @Test
+    fun pointsOnCircle() {
+        val ellipse = Ellipse(
+            Point(-1.0, 0.0), Point(0.0, 1.0),
+            Point(1.0, 0.0), Point(0.0, -1.0))
+        val points: List<Point> = listOf(
+            Point(0.0, 1.0), Point(-1.0, 0.0),
+            Point(0.0, -1.0), Point(1.0, 0.0))
+
+        assertEquals(ellipse, VectorizationImpl().vectorize(points))
+    }
+
+    @Test
+    fun pointsOnEllipse() {
+        val ellipse = Ellipse(
+            Point(-3.0, 0.0), Point(0.0, 2.0),
+            Point(3.0, 0.0), Point(0.0, -2.0))
+        val points: List<Point> = listOf(
+            Point(-3.0, 0.0), Point(0.0, 2.0),
+            Point(3.0, 0.0), Point(0.0, -2.0))
+
+        assertEquals(ellipse, VectorizationImpl().vectorize(points))
+    }
+
+    @Test
+    fun pointsNotOnEllipse() {
+        val ellipse = Ellipse(
+            Point(-3.4126744186046514, -0.014922480620155096),
+            Point(0.2023255813953487, 1.985077519379845),
+            Point(3.817325581395349, -0.014922480620155096),
+            Point(0.2023255813953487, -2.014922480620155))
+        val points: List<Point> = listOf(
+            Point(-3.23, 0.0), Point(-1.57, 1.46),
+            Point(0.0, 2.0), Point(1.52, 1.53),
+            Point(4.0, 0.0), Point(1.49, -1.55),
+            Point(0.0, -2.0), Point(-1.57, -1.46))
+
+        assertEquals(ellipse, VectorizationImpl().vectorize(points))
+    }
+
+    @Test
+    fun notEllipse() {
+        val points: List<Point> = listOf(
+            Point(-3.0, 0.0), Point(4.0, 2.0),
+            Point(0.0, 2.0), Point(0.0, -2.0),
+            Point(-3.0, 0.0))
 
         assertEquals(Undefined, VectorizationImpl().vectorize(points))
     }
