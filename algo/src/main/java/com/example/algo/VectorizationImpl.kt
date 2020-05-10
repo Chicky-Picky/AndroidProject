@@ -47,41 +47,52 @@ class VectorizationImpl : Vectorization {
             var product: Double
             var productPrev = 0.0
             var area2 = 0.0
-            var pointsRounded = points
-            var power : Int
-            var num : Long
+            val pointsRounded : MutableList<Point> = mutableListOf()
+            val powerX : MutableList<Int> = mutableListOf()
+            val powerY : MutableList<Int> = mutableListOf()
+            val pX : Int
+            val pY : Int
+            var num : Int
+
+            for (i in points.indices) {
+                pointsRounded.add(points[i])
+            }
 
             for (i in pointsRounded.indices) {
-                /* the number of digits after . */
-                power = abs(pointsRounded[i].x).toString().length -
-                        abs(pointsRounded[i].x).toInt().toString().length - 1
+                /* the number of digits after . in x-coordinates */
+                powerX.add(abs(pointsRounded[i].x).toString().length -
+                        abs(pointsRounded[i].x).toInt().toString().length - 1)
 
+                /* the number of digits after . int y-coordinates */
+                powerY.add(abs(pointsRounded[i].y).toString().length -
+                        abs(pointsRounded[i].y).toInt().toString().length - 1)
+            }
+
+            pX = powerX.max() ?: 0
+            pY = powerY.max() ?: 0
+
+            for (i in pointsRounded.indices) {
                 /* the x-coordinate as an integer without sign */
-                num = (abs(pointsRounded[i].x) * (10.0).pow(power)).toLong()
+                num = (abs(pointsRounded[i].x) * (10.0).pow(pX)).toInt()
 
                 /* checking the last digit and rounding */
                 if (num % 10 < 5)
                     pointsRounded[i].x = sign(pointsRounded[i].x) *
-                            (num - (num % 10)) * (10.0).pow(-power)
+                            (num - (num % 10)) * (10.0).pow(-pX)
                 else
                     pointsRounded[i].x = sign(pointsRounded[i].x) *
-                            (num - (num % 10) + 10) * (10.0).pow(-power)
-
-                /* the number of digits after . */
-                power = abs(pointsRounded[i].y).toString().length -
-                        abs(pointsRounded[i].y).toInt().toString().length - 1
+                            (num - (num % 10) + 10) * (10.0).pow(-pX)
 
                 /* the y-coordinate as an integer without sign */
-                num = (abs(pointsRounded[i].y) * (10.0).pow(power)).toLong()
+                num = (abs(pointsRounded[i].y) * (10.0).pow(pY)).toInt()
 
                 /* checking the last digit and rounding */
                 if (num % 10 < 5)
                     pointsRounded[i].y = sign(pointsRounded[i].y) *
-                            (num - (num % 10)) * (10.0).pow(-power)
+                            (num - (num % 10)) * (10.0).pow(-pY)
                 else
                     pointsRounded[i].y = sign(pointsRounded[i].y) *
-                            (num - (num % 10) + 10) * (10.0).pow(-power)
-
+                            (num - (num % 10) + 10) * (10.0).pow(-pY)
             }
 
             /* checking the convexity of the rounded polygon */
