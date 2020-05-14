@@ -1,7 +1,6 @@
 package com.example.algo
 
-import com.sun.org.apache.xalan.internal.lib.ExsltMath.abs
-import kotlin.math.pow
+import kotlin.math.absoluteValue
 import kotlin.math.sign
 
 class VectorizationImpl : Vectorization {
@@ -37,7 +36,7 @@ class VectorizationImpl : Vectorization {
         for (i in points.indices)
             err += (points[i].y - a * points[i].x - b) * (points[i].y - a * points[i].x - b)
 
-        if (err < 1000)
+        if (err < 10000)
             return LineSegment(
                 x.min()?.let { Point(it, a * it + b) } ?: Point(0.0, 0.0),
                 x.max()?.let { Point(it, a * it + b) } ?: Point(0.0, 0.0))
@@ -48,51 +47,33 @@ class VectorizationImpl : Vectorization {
             var productPrev = 0.0
             var area2 = 0.0
             val pointsRounded : MutableList<Point> = mutableListOf()
-            val powerX : MutableList<Int> = mutableListOf()
-            val powerY : MutableList<Int> = mutableListOf()
-            val pX : Int
-            val pY : Int
-            var num : Int
+            var num : Long
 
             for (i in points.indices) {
                 pointsRounded.add(points[i])
             }
 
             for (i in pointsRounded.indices) {
-                /* the number of digits after . in x-coordinates */
-                powerX.add(abs(pointsRounded[i].x).toString().length -
-                        abs(pointsRounded[i].x).toInt().toString().length - 1)
-
-                /* the number of digits after . int y-coordinates */
-                powerY.add(abs(pointsRounded[i].y).toString().length -
-                        abs(pointsRounded[i].y).toInt().toString().length - 1)
-            }
-
-            pX = powerX.max() ?: 0
-            pY = powerY.max() ?: 0
-
-            for (i in pointsRounded.indices) {
-                /* the x-coordinate as an integer without sign */
-                num = (abs(pointsRounded[i].x) * (10.0).pow(pX)).toInt()
+                num = (pointsRounded[i].x.absoluteValue * 100.0).toLong()
 
                 /* checking the last digit and rounding */
                 if (num % 10 < 5)
                     pointsRounded[i].x = sign(pointsRounded[i].x) *
-                            (num - (num % 10)) * (10.0).pow(-pX)
+                            (num - (num % 10)) / 100.0
                 else
                     pointsRounded[i].x = sign(pointsRounded[i].x) *
-                            (num - (num % 10) + 10) * (10.0).pow(-pX)
+                            (num - (num % 10) + 10) / 100.0
 
                 /* the y-coordinate as an integer without sign */
-                num = (abs(pointsRounded[i].y) * (10.0).pow(pY)).toInt()
+                num = (pointsRounded[i].y.absoluteValue * 100.0).toLong()
 
                 /* checking the last digit and rounding */
                 if (num % 10 < 5)
                     pointsRounded[i].y = sign(pointsRounded[i].y) *
-                            (num - (num % 10)) * (10.0).pow(-pY)
+                            (num - (num % 10)) / 100.0
                 else
                     pointsRounded[i].y = sign(pointsRounded[i].y) *
-                            (num - (num % 10) + 10) * (10.0).pow(-pY)
+                            (num - (num % 10) + 10) / 100.0
             }
 
             /* checking the convexity of the rounded polygon */
