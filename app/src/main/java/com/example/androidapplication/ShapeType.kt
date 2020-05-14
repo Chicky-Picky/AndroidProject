@@ -1,15 +1,22 @@
 package com.example.androidapplication
 
-import com.example.algo.LineSegment
-import com.example.algo.Point
-import com.example.algo.ShapeVisitor
-import com.example.algo.Undefined
+import android.content.Context
+import android.widget.Toast
+import com.example.algo.*
 
 
+class ShapeType(override var points: Points) : ShapeVisitor {
 
-class ShapeType : ShapeVisitor {
+    override fun redef(x: ArrayList<Point>, s: String) {
+        points.shapes.add(x)
+        points.shapeType.add(s)
+    }
+
     override fun visit(undefined: Undefined) {
-        //Relaxxx
+        val x = ArrayList<Point>()
+        val s = "undefine"
+        redef(x, s)
+
     }
 
     override fun visit(lineSegment: LineSegment) {
@@ -17,7 +24,17 @@ class ShapeType : ShapeVisitor {
         val s = "lineSegment"
         x.add(Point(lineSegment.point1.x, lineSegment.point1.y))
         x.add(Point(lineSegment.point2.x, lineSegment.point2.y))
-        Points.redef(x, s)
+        redef(x, s)
+    }
+
+    override fun visit(ellipse: Ellipse) {
+        val x = ArrayList<Point>()
+        val s = "ellipse"
+        x.add(ellipse.left)
+        x.add(ellipse.top)
+        x.add(ellipse.right)
+        x.add(ellipse.bottom)
+        redef(x, s)
     }
 
 }

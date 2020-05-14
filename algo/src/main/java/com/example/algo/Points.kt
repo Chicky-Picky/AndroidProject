@@ -1,8 +1,12 @@
-package com.example.androidapplication
+package com.example.algo
 
-import com.example.algo.Point
 
-object Points {
+
+data class Points (var shapes: ArrayList<ArrayList<Point>>, var shapeType: ArrayList<String>)
+
+
+
+/*class Points {
     var shapes = ArrayList<ArrayList<Point>>()
     var shapeType = ArrayList<String>()
 
@@ -10,5 +14,5 @@ object Points {
         shapes.add(x)
         shapeType.add(s)
     }
-}
+}*/
 

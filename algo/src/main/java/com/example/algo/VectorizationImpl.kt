@@ -37,7 +37,7 @@ class VectorizationImpl : Vectorization {
         for (i in points.indices)
             err += (points[i].y - a * points[i].x - b) * (points[i].y - a * points[i].x - b)
 
-        if (err < 2)
+        if (err < 1000)
             return LineSegment(
                 x.min()?.let { Point(it, a * it + b) } ?: Point(0.0, 0.0),
                 x.max()?.let { Point(it, a * it + b) } ?: Point(0.0, 0.0))
