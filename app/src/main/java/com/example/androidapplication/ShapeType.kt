@@ -5,9 +5,9 @@ import android.widget.Toast
 import com.example.algo.*
 
 
-class ShapeType(override var points: Points) : ShapeVisitor {
+class ShapeType(private var points: Points) : ShapeVisitor {
 
-    override fun redef(x: ArrayList<Point>, s: String) {
+    private fun redef(x: ArrayList<Point>, s: String) {
         points.shapes.add(x)
         points.shapeType.add(s)
     }
