@@ -8,14 +8,16 @@ class VectorizationImpl : Vectorization {
         var sumx = 0.0
         var sumy = 0.0
         var sumx2 = 0.0
+        var sumy2 = 0.0
         var sumxy = 0.0
         val a: Double
         val b: Double
-        var err = 0.0
+        val c: Double
+        val d: Double
+        var errY = 0.0
         val x: MutableList<Double> = mutableListOf()
         val y: MutableList<Double> = mutableListOf()
-        var c = 0.0
-        var errVert = 0.0
+        var errX = 0.0
 
         if (points.isEmpty())
             return LineSegment(Point(0.0, 0.0), Point(0.0, 0.0))
@@ -24,13 +26,14 @@ class VectorizationImpl : Vectorization {
             sumx += points[i].x
             sumy += points[i].y
             sumx2 += points[i].x * points[i].x
+            sumy2 += points[i].y * points[i].y
             sumxy += points[i].x * points[i].y
-            c += points[i].x
         }
 
         a = (points.size * sumxy - (sumx * sumy)) / (points.size * sumx2 - sumx * sumx)
         b = (sumy - a * sumx) / points.size
-        c /= points.size
+        c = (points.size * sumxy - (sumx * sumy)) / (points.size * sumy2 - sumy * sumy)
+        d = (sumx - c * sumy) / points.size
 
         points.forEach {
             x.add(it.x)
@@ -38,17 +41,17 @@ class VectorizationImpl : Vectorization {
         }
 
         for (i in points.indices) {
-            err += (points[i].y - a * points[i].x - b) * (points[i].y - a * points[i].x - b)
-            errVert += (points[i].x - c) * (points[i].x - c)
+            errY += (points[i].y - a * points[i].x - b) * (points[i].y - a * points[i].x - b)
+            errX += (points[i].x - c * points[i].y - d) * (points[i].x - c * points[i].y - d)
         }
 
         when {
-            err < 500 * points.size -> return LineSegment(
+            errY < errX && errY < 500 * points.size -> return LineSegment(
                 x.min()?.let { Point(it, a * it + b) } ?: Point(0.0, 0.0),
                 x.max()?.let { Point(it, a * it + b) } ?: Point(0.0, 0.0))
-            errVert < 500 * points.size -> return LineSegment(
-                y.min()?.let { Point(c, it) } ?: Point(0.0, 0.0),
-                y.max()?.let { Point(c, it) } ?: Point(0.0, 0.0))
+            errX < 500 * points.size -> return LineSegment(
+                y.min()?.let { Point(c * it + d, it) } ?: Point(0.0, 0.0),
+                y.max()?.let { Point(c * it + d, it) } ?: Point(0.0, 0.0))
             else -> {
                 var area2 = 0.0
                 var inside = false
@@ -120,8 +123,8 @@ class VectorizationImpl : Vectorization {
                     return Undefined
 
                 return Ellipse(
-                    Point(cx + hor, cy), Point(cx, cy - vert),
-                    Point(cx - hor, cy), Point(cx, cy + vert)
+                    Point(cx - hor, cy), Point(cx, cy + vert),
+                    Point(cx + hor, cy), Point(cx, cy - vert)
                 )
             }
         }
