@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">AndroidApplication</string>
-    <string name="canvasContentDescription">Mini Paint is a simple line drawing app.
-   Drag your fingers to draw. Rotate the phone to clear.</string>
+    <string name="description">Insert text here</string>
+    <string name="undoText">Undo</string>
+    <string name="clearText">Clear</string>
+    <string name="modeText">Mode</string>
 </resources>

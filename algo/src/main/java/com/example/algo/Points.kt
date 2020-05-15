@@ -6,13 +6,3 @@ data class Points (var shapes: ArrayList<ArrayList<Point>>, var shapeType: Array
 
 
 
-/*class Points {
-    var shapes = ArrayList<ArrayList<Point>>()
-    var shapeType = ArrayList<String>()
-
-    fun redef(x: ArrayList<Point>, s: String) {
-        shapes.add(x)
-        shapeType.add(s)
-    }
-}*/
-

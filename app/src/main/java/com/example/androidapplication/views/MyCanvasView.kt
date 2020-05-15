@@ -74,15 +74,6 @@ class MyCanvasView(context: Context) : View(context) {
         strokeWidth = 15f
     }
 
-    private val paint4 = Paint().apply {
-        color = Color.BLUE
-        isAntiAlias = true
-        isDither = true
-        style = Paint.Style.STROKE
-        strokeJoin = Paint.Join.ROUND
-        strokeCap = Paint.Cap.ROUND
-        strokeWidth = 15f
-    }
 
     private val touchTolerance = ViewConfiguration.get(context).scaledTouchSlop
 
@@ -101,7 +92,7 @@ class MyCanvasView(context: Context) : View(context) {
         val y: ArrayList<Point> = arrayListOf(Point(0.0, 0.0), Point(0.0, 0.0))
         var i1 = -1
         var i2 = -1
-        var d = 138.0
+        var d = 20.0
         for (i in 0 until lineSegmentsEnds.size)
         {
             val z = lineSegmentsEnds[i]
@@ -113,7 +104,7 @@ class MyCanvasView(context: Context) : View(context) {
             }
         }
 
-        d = 138.0
+        d = 20.0
         for (i in 0 until lineSegmentsEnds.size)
         {
             val z = lineSegmentsEnds[i]
@@ -146,85 +137,6 @@ class MyCanvasView(context: Context) : View(context) {
     }
 
 
-    /*private fun rectCheck(A: Point, B: Point, C: Point, D: Point): ArrayList<Point>{
-        val ans : ArrayList<Point> = arrayListOf(C, D)
-        val a = dist(A, B)
-        val b = dist(B, C)
-        val c = dist(C, D)
-        val d = dist(D, A)
-        val ax = B.x - A.x
-        val ay = B.y - A.y
-        val bx = C.x - B.x
-        val by = C.y - B.y
-        val cx = D.x - C.x
-        val cy = D.y - C.y
-        val dx = A.x - D.x
-        val dy = A.y - D.y
-
-
-        val da = ax/ay
-        val db = bx/by
-        val dd = dx/dy
-        if (abs(b - d) > 50)
-        {
-            return ans
-        }
-        if (abs(a - c) > 100)
-        {
-            return ans
-        }
-        if (abs(da * db) < 0.75 || abs(da * db) > 1.38)
-        {
-            return ans
-        }
-        if (abs(da * dd) < 0.75 || abs(da * dd) > 1.38)
-        {
-            return ans
-        }
-        val dif = abs(da)
-        val dis = (b + c) / 2
-        var disty = sqrt(dis * dis / (dif * dif + 1))
-        var distx = dif * disty
-        if (ax > 0 && ay > 0)
-        {
-            disty *= -1
-            if (bx < 0)
-            {
-                distx *= -1
-                disty *= -1
-            }
-        }
-        if (ax > 0 && ay < 0)
-        {
-            distx *= -1
-            disty *= -1
-            if (bx > 0)
-            {
-                distx *= -1
-                disty *= -1
-            }
-        }
-        if (ax < 0 && ay < 0)
-        {
-            distx *= -1
-            if (bx > 0)
-            {
-                distx *= -1
-                disty *= -1
-            }
-        }
-        if (ax < 0 && ay > 0)
-        {
-            if (bx < 0)
-            {
-                distx *= -1
-                disty *= -1
-            }
-        }
-        ans[0] = Point(B.x + distx, B.y + disty)
-        ans[1] = Point(A.x + distx, A.y + disty)
-        return ans
-    }*/
 
 
 
@@ -260,56 +172,6 @@ class MyCanvasView(context: Context) : View(context) {
             if (points.shapeType[i] == "lineSegment")
             {
                 canvas.drawLine(points.shapes[i][0].x.toFloat(), points.shapes[i][0].y.toFloat(), points.shapes[i][1].x.toFloat(), points.shapes[i][1].y.toFloat(), paint2)
-
-                /*var t = ArrayList<Point>()
-                t = distCheck(points.shapes[i])
-                val c = t[0]
-                val d = t[1]
-                var i1 = -1
-                var i2 = -1
-                var i3 = -1
-
-                if (points.shapes[i][0] != c && points.shapes[i][1] != d)
-                {
-                    for (j in 0 until lineSegmentsEnds.size)
-                    {
-                        if (c == lineSegmentsEnds[j])
-                        {
-                            i1 = j
-                        }
-                        if (d == lineSegmentsEnds[j])
-                        {
-                            i2 = j
-                        }
-                    }
-                    for (j in 0 until lineSegmentsEdges[i1].size)
-                    {
-                        for (k in 0 until lineSegmentsEdges[i2].size)
-                        {
-                            var a = lineSegmentsEnds[lineSegmentsEdges[i1][j]]
-                            var b = lineSegmentsEnds[lineSegmentsEdges[i2][k]]
-                            for (l in 0 until lineSegmentsEnds.size)
-                            {
-                                if (a == lineSegmentsEnds[l])
-                                {
-                                    i3 = l
-                                }
-                            }
-                            for (l in 0 until lineSegmentsEdges[i3].size)
-                            {
-                                if (b == lineSegmentsEnds[lineSegmentsEdges[i3][l]])
-                                {
-                                    var cd = rectCheck(a, b, d, c)
-                                    canvas.drawLine(a.x.toFloat(), a.y.toFloat(), b.x.toFloat(), b.y.toFloat(), paint4)
-                                    canvas.drawLine(b.x.toFloat(), b.y.toFloat(), cd[0].x.toFloat(), cd[0].y.toFloat(), paint4)
-                                    canvas.drawLine(cd[0].x.toFloat(), cd[0].y.toFloat(), cd[1].x.toFloat(), cd[1].y.toFloat(), paint4)
-                                    canvas.drawLine(cd[1].x.toFloat(), cd[1].y.toFloat(), a.x.toFloat(), a.y.toFloat(), paint4)
-                                }
-                            }
-                        }
-                    }
-
-                }*/
 
                 points.shapes[i] = distCheck(points.shapes[i])
 
