@@ -3,32 +3,21 @@ package com.example.androidapplication.views
 import android.content.Context
 import android.graphics.*
 import android.os.Build
-import android.os.Bundle
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
-import android.widget.Button
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.content.res.ResourcesCompat
 import com.example.algo.*
 import com.example.algo.Point
-import com.example.androidapplication.R
 import com.example.androidapplication.ShapeType
 import com.example.algo.Points
 import kotlin.math.abs
 import kotlin.math.sqrt
-import com.example.androidapplication.MainActivity
-import android.app.Activity
 
 
 class MyCanvasView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : View(context, attrs, defStyle) {
-
-
-    val buttonMode: Button = findViewById(R.id.mode)
-    val buttonClear: Button = findViewById(R.id.clear)
-    val buttonUndo: Button = findViewById(R.id.undo)
 
 
     private var listOfListOfPoints = ArrayList<ArrayList<Point>>()
@@ -37,11 +26,7 @@ class MyCanvasView @JvmOverloads constructor(context: Context, attrs: AttributeS
     private var path = Path()
     private var vector = VectorizationImpl()
     private var lineSegmentsEnds = ArrayList<Point>()
-    private var lineSegmentsEdges = ArrayList<ArrayList<Int>>()
-    private var lineSegmentIndexes1 = ArrayList<Int>()
-    private var lineSegmentIndexes2 = ArrayList<Int>()
     private var points = Points(arrayListOf(), arrayListOf())
-
     public var mode: Int = 0
 
 
@@ -78,15 +63,12 @@ class MyCanvasView @JvmOverloads constructor(context: Context, attrs: AttributeS
 
     private fun distCheck (x: ArrayList<Point>): ArrayList<Point>{
         val y: ArrayList<Point> = arrayListOf(Point(0.0, 0.0), Point(0.0, 0.0))
-        var i1 = -1
-        var i2 = -1
         var d = 30.0
         for (i in 0 until lineSegmentsEnds.size)
         {
             val z = lineSegmentsEnds[i]
             if (dist(x[0], z) < d)
             {
-                i1 = i
                 y[0] = z
                 d = dist(x[0], z)
             }
@@ -98,29 +80,20 @@ class MyCanvasView @JvmOverloads constructor(context: Context, attrs: AttributeS
             val z = lineSegmentsEnds[i]
             if (dist(x[1], z) < d)
             {
-                i2 = i
                 y[1] = z
                 d = dist(x[1], z)
             }
         }
         if (y[0] == Point(0.0, 0.0))
         {
-            lineSegmentsEdges.add(arrayListOf())
-            i1 = lineSegmentsEnds.size
             lineSegmentsEnds.add(x[0])
             y[0] = x[0]
         }
         if (y[1] == Point(0.0, 0.0))
         {
-            lineSegmentsEdges.add(arrayListOf())
-            i2 = lineSegmentsEnds.size
             lineSegmentsEnds.add(x[1])
             y[1] = x[1]
         }
-        lineSegmentIndexes1.add(i1)
-        lineSegmentIndexes2.add(i2)
-        lineSegmentsEdges[i1].add(i2)
-        lineSegmentsEdges[i2].add(i1)
         return y
     }
 
