@@ -20,6 +20,7 @@ import com.example.algo.VectorizationImpl
 import com.example.androidapplication.MyViewModel
 import com.example.androidapplication.R
 import com.example.androidapplication.ShapeType
+import com.example.androidapplication.TempClass
 import kotlin.math.abs
 import kotlin.math.sqrt
 
@@ -31,7 +32,11 @@ class MyCanvasView @JvmOverloads constructor(context: Context, attrs: AttributeS
     private var path = Path()
     private var vector = VectorizationImpl()
     private var lineSegmentsEnds = ArrayList<Point>()
+    private var lineSegmentsIndexes = ArrayList<Int>()
     var points = Points(arrayListOf(), arrayListOf())
+    var mode: Int = 0
+
+
 
     //var model: MyViewModel = ViewModelProviders.of(this).get(MyViewModel::class.java)
 
@@ -96,12 +101,22 @@ class MyCanvasView @JvmOverloads constructor(context: Context, attrs: AttributeS
         if (y[0] == Point(0.0, 0.0))
         {
             lineSegmentsEnds.add(x[0])
+            lineSegmentsIndexes.add(1)
             y[0] = x[0]
+        }
+        else
+        {
+            lineSegmentsIndexes.add(0)
         }
         if (y[1] == Point(0.0, 0.0))
         {
             lineSegmentsEnds.add(x[1])
+            lineSegmentsIndexes.add(1)
             y[1] = x[1]
+        }
+        else
+        {
+            lineSegmentsIndexes.add(0)
         }
         return y
     }
@@ -127,8 +142,25 @@ class MyCanvasView @JvmOverloads constructor(context: Context, attrs: AttributeS
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onDraw(canvas: Canvas) {
+        mode = TempClass.mode
+        listOfListOfPoints = TempClass.listsOfPoints
+        currentNumberOfPoints = TempClass.currentPoints
+        currentNumberOfLists = TempClass.currentLists
+        path = TempClass.path
+        lineSegmentsEnds = TempClass.lineSegments
+        lineSegmentsIndexes = TempClass.lineDebug
+        points = TempClass.shapes
 
-        canvas.drawPath(path, paint)
+
+
+
+
+
+
+
+        if (mode == 0) {
+            canvas.drawPath(path, paint)
+        }
         for (i in 0 until points.shapes.size)
         {
             if (points.shapeType[i] == "undefine" && i == points.shapes.size - 1)
@@ -158,6 +190,15 @@ class MyCanvasView @JvmOverloads constructor(context: Context, attrs: AttributeS
 
 
     private fun touchStart() {
+        TempClass.listsOfPoints = listOfListOfPoints
+        TempClass.currentPoints = currentNumberOfPoints
+        TempClass.currentLists = currentNumberOfLists
+        TempClass.lineSegments = lineSegmentsEnds
+        TempClass.lineDebug = lineSegmentsIndexes
+        TempClass.shapes = points
+        TempClass.path = path
+
+        //path.reset()
         path.moveTo(motionTouchEventX, motionTouchEventY)
         listOfListOfPoints.add(arrayListOf())
         currentNumberOfLists++
@@ -166,6 +207,7 @@ class MyCanvasView @JvmOverloads constructor(context: Context, attrs: AttributeS
     }
 
     private fun touchMove() {
+
         val p = listOfListOfPoints[currentNumberOfLists][currentNumberOfPoints - 1]
         val dx = abs(motionTouchEventX - p.x.toFloat())
         val dy = abs(motionTouchEventY - p.y.toFloat())
@@ -177,11 +219,22 @@ class MyCanvasView @JvmOverloads constructor(context: Context, attrs: AttributeS
             listOfListOfPoints[currentNumberOfLists].add(Point(motionTouchEventX.toDouble(), motionTouchEventY.toDouble()))
 
         }
+
+
+        TempClass.listsOfPoints = listOfListOfPoints
+        TempClass.currentPoints = currentNumberOfPoints
+        TempClass.currentLists = currentNumberOfLists
+        TempClass.lineSegments = lineSegmentsEnds
+        TempClass.lineDebug = lineSegmentsIndexes
+        TempClass.shapes = points
+        TempClass.path = path
+
     }
 
 
 
     private fun touchUp() {
+
         val p = listOfListOfPoints[currentNumberOfLists][currentNumberOfPoints - 1]
         path.quadTo(p.x.toFloat(), p.y.toFloat(), (motionTouchEventX + p.x.toFloat()) / 2, (motionTouchEventY + p.y.toFloat()) / 2)
 
@@ -190,6 +243,15 @@ class MyCanvasView @JvmOverloads constructor(context: Context, attrs: AttributeS
 
         vector.vectorize(listOfListOfPoints[currentNumberOfLists]).accept(ShapeType(points))
         invalidate()
+
+        TempClass.listsOfPoints = listOfListOfPoints
+        TempClass.currentPoints = currentNumberOfPoints
+        TempClass.currentLists = currentNumberOfLists
+        TempClass.lineSegments = lineSegmentsEnds
+        TempClass.lineDebug = lineSegmentsIndexes
+        TempClass.shapes = points
+        TempClass.path = path
+
     }
 }
 

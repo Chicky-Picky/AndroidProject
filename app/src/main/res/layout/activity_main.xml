@@ -26,6 +26,7 @@
 
 
     <com.example.androidapplication.views.MyCanvasView
+        android:id="@+id/myView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -42,6 +43,7 @@
         >
 
         <Button
+            android:onClick="undoView"
             android:id="@+id/undo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -50,6 +52,7 @@
             tools:ignore="ButtonStyle" />
 
         <Button
+            android:onClick="clearView"
             android:id="@+id/clear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -58,6 +61,7 @@
             tools:ignore="ButtonStyle" />
 
         <Button
+            android:onClick="changeMode"
             android:id="@+id/mode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

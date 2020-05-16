@@ -34,7 +34,11 @@ class ShapeType(private var points: Points) : ShapeVisitor {
         x.add(ellipse.top)
         x.add(ellipse.right)
         x.add(ellipse.bottom)
+        TempClass.lineDebug.add(0)
+        TempClass.lineDebug.add(0)
         redef(x, s)
     }
+
+
 
 }

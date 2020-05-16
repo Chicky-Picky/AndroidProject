@@ -12,9 +12,23 @@ class MyViewModel : ViewModel() {
     private var currentLists = -1
     private var lineSegments = ArrayList<Point>()
     private var shapes = Points(arrayListOf(), arrayListOf())
-    public var mode: Int = 0
+    //public var mode: Int = 0
 
     var listOfListOfPoints : MutableLiveData<ArrayList<ArrayList<Point>>>? = null
+    var mode: MutableLiveData<Int>? = null
+
+    fun getMode() : LiveData<Int> {
+        if (mode == null) {
+            mode = MutableLiveData()
+        }
+        return mode as MutableLiveData<Int>
+    }
+
+
+
+
+
+
 
     /*
     fun getListOfListOfPoints(): LiveData<ArrayList<ArrayList<Point>>> {
@@ -22,17 +36,19 @@ class MyViewModel : ViewModel() {
             listOfListOfPoints = MutableLiveData()
             loadListOfListOfPoints()
         }
+        return listOfListOfPoints as MutableLiveData<ArrayList<ArrayList<Point>>>
+
     }
 
     private fun loadListOfListOfPoints() {
     }
     */
 
-    fun getLists(): ArrayList<ArrayList<Point>> {
+    /*fun getLists(): ArrayList<ArrayList<Point>> {
         return listsOfPoints
     }
 
     private fun loadLists(a: ArrayList<ArrayList<Point>>) {
         listsOfPoints = a
-    }
+    }*/
 }
