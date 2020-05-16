@@ -3,9 +3,12 @@ package com.example.androidapplication.views
 import android.content.Context
 import android.graphics.*
 import android.os.Build
+import android.os.Bundle
+import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
+import android.widget.Button
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.res.ResourcesCompat
@@ -16,26 +19,34 @@ import com.example.androidapplication.ShapeType
 import com.example.algo.Points
 import kotlin.math.abs
 import kotlin.math.sqrt
+import com.example.androidapplication.MainActivity
+import android.app.Activity
 
 
-class MyCanvasView(context: Context) : View(context) {
+class MyCanvasView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : View(context, attrs, defStyle) {
+
+
+    val buttonMode: Button = findViewById(R.id.mode)
+    val buttonClear: Button = findViewById(R.id.clear)
+    val buttonUndo: Button = findViewById(R.id.undo)
+
+
     private var listOfListOfPoints = ArrayList<ArrayList<Point>>()
     private var currentNumberOfPoints = 0
     private var currentNumberOfLists = -1
     private var path = Path()
-    private val drawColor = ResourcesCompat.getColor(resources, R.color.colorPaint, null)
     private var vector = VectorizationImpl()
     private var lineSegmentsEnds = ArrayList<Point>()
     private var lineSegmentsEdges = ArrayList<ArrayList<Int>>()
     private var lineSegmentIndexes1 = ArrayList<Int>()
     private var lineSegmentIndexes2 = ArrayList<Int>()
-    var points = Points(arrayListOf(), arrayListOf())
+    private var points = Points(arrayListOf(), arrayListOf())
 
-
+    public var mode: Int = 0
 
 
     private val paint = Paint().apply {
-        color = drawColor
+        color = Color.LTGRAY
         isAntiAlias = true
         isDither = true
         style = Paint.Style.STROKE
@@ -45,7 +56,7 @@ class MyCanvasView(context: Context) : View(context) {
     }
 
     private val paint1 = Paint().apply {
-        color = Color.RED
+        color = Color.BLACK
         isAntiAlias = true
         isDither = true
         style = Paint.Style.STROKE
@@ -53,30 +64,8 @@ class MyCanvasView(context: Context) : View(context) {
         strokeCap = Paint.Cap.ROUND
         strokeWidth = 15f
     }
-
-    private val paint2 = Paint().apply {
-        color = Color.YELLOW
-        isAntiAlias = true
-        isDither = true
-        style = Paint.Style.STROKE
-        strokeJoin = Paint.Join.ROUND
-        strokeCap = Paint.Cap.ROUND
-        strokeWidth = 15f
-    }
-
-    private val paint3 = Paint().apply {
-        color = Color.GREEN
-        isAntiAlias = true
-        isDither = true
-        style = Paint.Style.STROKE
-        strokeJoin = Paint.Join.ROUND
-        strokeCap = Paint.Cap.ROUND
-        strokeWidth = 15f
-    }
-
 
     private val touchTolerance = ViewConfiguration.get(context).scaledTouchSlop
-
 
     private var motionTouchEventX = 0f
     private var motionTouchEventY = 0f
@@ -87,12 +76,11 @@ class MyCanvasView(context: Context) : View(context) {
         return sqrt(z.x * z.x + z.y * z.y)
     }
 
-
     private fun distCheck (x: ArrayList<Point>): ArrayList<Point>{
         val y: ArrayList<Point> = arrayListOf(Point(0.0, 0.0), Point(0.0, 0.0))
         var i1 = -1
         var i2 = -1
-        var d = 20.0
+        var d = 30.0
         for (i in 0 until lineSegmentsEnds.size)
         {
             val z = lineSegmentsEnds[i]
@@ -104,7 +92,7 @@ class MyCanvasView(context: Context) : View(context) {
             }
         }
 
-        d = 20.0
+        d = 30.0
         for (i in 0 until lineSegmentsEnds.size)
         {
             val z = lineSegmentsEnds[i]
@@ -137,10 +125,6 @@ class MyCanvasView(context: Context) : View(context) {
     }
 
 
-
-
-
-
     override fun onTouchEvent(event: MotionEvent): Boolean {
         motionTouchEventX = event.x
         motionTouchEventY = event.y
@@ -154,11 +138,12 @@ class MyCanvasView(context: Context) : View(context) {
     }
 
 
-
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onDraw(canvas: Canvas) {
 
-        canvas.drawPath(path, paint)
+        if (mode == 0) {
+            canvas.drawPath(path, paint)
+        }
         for (i in 0 until points.shapes.size)
         {
             if (points.shapeType[i] == "undefine" && i == points.shapes.size - 1)
@@ -171,11 +156,11 @@ class MyCanvasView(context: Context) : View(context) {
             }
             if (points.shapeType[i] == "lineSegment")
             {
-                canvas.drawLine(points.shapes[i][0].x.toFloat(), points.shapes[i][0].y.toFloat(), points.shapes[i][1].x.toFloat(), points.shapes[i][1].y.toFloat(), paint2)
+                canvas.drawLine(points.shapes[i][0].x.toFloat(), points.shapes[i][0].y.toFloat(), points.shapes[i][1].x.toFloat(), points.shapes[i][1].y.toFloat(), paint1)
 
                 points.shapes[i] = distCheck(points.shapes[i])
 
-                canvas.drawLine(points.shapes[i][0].x.toFloat(), points.shapes[i][0].y.toFloat(), points.shapes[i][1].x.toFloat(), points.shapes[i][1].y.toFloat(), paint3)
+                canvas.drawLine(points.shapes[i][0].x.toFloat(), points.shapes[i][0].y.toFloat(), points.shapes[i][1].x.toFloat(), points.shapes[i][1].y.toFloat(), paint1)
 
 
             }
@@ -210,8 +195,6 @@ class MyCanvasView(context: Context) : View(context) {
         }
     }
 
-
-
     private fun touchUp() {
         val p = listOfListOfPoints[currentNumberOfLists][currentNumberOfPoints - 1]
         path.quadTo(p.x.toFloat(), p.y.toFloat(), (motionTouchEventX + p.x.toFloat()) / 2, (motionTouchEventY + p.y.toFloat()) / 2)
@@ -222,5 +205,10 @@ class MyCanvasView(context: Context) : View(context) {
         vector.vectorize(listOfListOfPoints[currentNumberOfLists]).accept(ShapeType(points))
         invalidate()
     }
+
+
+
+
+
 }
 
