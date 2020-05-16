@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 import android.os.Build
+import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
@@ -23,23 +24,19 @@ import kotlin.math.abs
 import kotlin.math.sqrt
 
 
-class MyCanvasView(context: Context) : View(context) {
+class MyCanvasView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : View(context, attrs, defStyle) {
     private var listOfListOfPoints = ArrayList<ArrayList<Point>>()
     private var currentNumberOfPoints = 0
     private var currentNumberOfLists = -1
     private var path = Path()
-    private val drawColor = ResourcesCompat.getColor(resources, R.color.colorPaint, null)
     private var vector = VectorizationImpl()
     private var lineSegmentsEnds = ArrayList<Point>()
-    private var lineSegmentsEdges = ArrayList<ArrayList<Int>>()
-    private var lineSegmentIndexes1 = ArrayList<Int>()
-    private var lineSegmentIndexes2 = ArrayList<Int>()
     var points = Points(arrayListOf(), arrayListOf())
 
     //var model: MyViewModel = ViewModelProviders.of(this).get(MyViewModel::class.java)
 
     private val paint = Paint().apply {
-        color = drawColor
+        color = Color.LTGRAY
         isAntiAlias = true
         isDither = true
         style = Paint.Style.STROKE
@@ -49,7 +46,7 @@ class MyCanvasView(context: Context) : View(context) {
     }
 
     private val paint1 = Paint().apply {
-        color = Color.RED
+        color = Color.BLACK
         isAntiAlias = true
         isDither = true
         style = Paint.Style.STROKE
@@ -58,25 +55,6 @@ class MyCanvasView(context: Context) : View(context) {
         strokeWidth = 15f
     }
 
-    private val paint2 = Paint().apply {
-        color = Color.YELLOW
-        isAntiAlias = true
-        isDither = true
-        style = Paint.Style.STROKE
-        strokeJoin = Paint.Join.ROUND
-        strokeCap = Paint.Cap.ROUND
-        strokeWidth = 15f
-    }
-
-    private val paint3 = Paint().apply {
-        color = Color.GREEN
-        isAntiAlias = true
-        isDither = true
-        style = Paint.Style.STROKE
-        strokeJoin = Paint.Join.ROUND
-        strokeCap = Paint.Cap.ROUND
-        strokeWidth = 15f
-    }
 
 
     private val touchTolerance = ViewConfiguration.get(context).scaledTouchSlop
@@ -94,15 +72,12 @@ class MyCanvasView(context: Context) : View(context) {
 
     private fun distCheck (x: ArrayList<Point>): ArrayList<Point>{
         val y: ArrayList<Point> = arrayListOf(Point(0.0, 0.0), Point(0.0, 0.0))
-        var i1 = -1
-        var i2 = -1
         var d = 20.0
         for (i in 0 until lineSegmentsEnds.size)
         {
             val z = lineSegmentsEnds[i]
             if (dist(x[0], z) < d)
             {
-                i1 = i
                 y[0] = z
                 d = dist(x[0], z)
             }
@@ -114,29 +89,20 @@ class MyCanvasView(context: Context) : View(context) {
             val z = lineSegmentsEnds[i]
             if (dist(x[1], z) < d)
             {
-                i2 = i
                 y[1] = z
                 d = dist(x[1], z)
             }
         }
         if (y[0] == Point(0.0, 0.0))
         {
-            lineSegmentsEdges.add(arrayListOf())
-            i1 = lineSegmentsEnds.size
             lineSegmentsEnds.add(x[0])
             y[0] = x[0]
         }
         if (y[1] == Point(0.0, 0.0))
         {
-            lineSegmentsEdges.add(arrayListOf())
-            i2 = lineSegmentsEnds.size
             lineSegmentsEnds.add(x[1])
             y[1] = x[1]
         }
-        lineSegmentIndexes1.add(i1)
-        lineSegmentIndexes2.add(i2)
-        lineSegmentsEdges[i1].add(i2)
-        lineSegmentsEdges[i2].add(i1)
         return y
     }
 
@@ -175,11 +141,10 @@ class MyCanvasView(context: Context) : View(context) {
             }
             if (points.shapeType[i] == "lineSegment")
             {
-                canvas.drawLine(points.shapes[i][0].x.toFloat(), points.shapes[i][0].y.toFloat(), points.shapes[i][1].x.toFloat(), points.shapes[i][1].y.toFloat(), paint2)
 
                 points.shapes[i] = distCheck(points.shapes[i])
 
-                canvas.drawLine(points.shapes[i][0].x.toFloat(), points.shapes[i][0].y.toFloat(), points.shapes[i][1].x.toFloat(), points.shapes[i][1].y.toFloat(), paint3)
+                canvas.drawLine(points.shapes[i][0].x.toFloat(), points.shapes[i][0].y.toFloat(), points.shapes[i][1].x.toFloat(), points.shapes[i][1].y.toFloat(), paint1)
 
 
             }
