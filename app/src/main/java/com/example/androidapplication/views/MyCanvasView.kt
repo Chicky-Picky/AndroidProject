@@ -1,7 +1,10 @@
 package com.example.androidapplication.views
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Path
 import android.os.Build
 import android.view.MotionEvent
 import android.view.View
@@ -9,11 +12,13 @@ import android.view.ViewConfiguration
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.res.ResourcesCompat
-import com.example.algo.*
+import androidx.lifecycle.ViewModelProviders
 import com.example.algo.Point
+import com.example.algo.Points
+import com.example.algo.VectorizationImpl
+import com.example.androidapplication.MyViewModel
 import com.example.androidapplication.R
 import com.example.androidapplication.ShapeType
-import com.example.algo.Points
 import kotlin.math.abs
 import kotlin.math.sqrt
 
@@ -30,9 +35,6 @@ class MyCanvasView(context: Context) : View(context) {
     private var lineSegmentIndexes1 = ArrayList<Int>()
     private var lineSegmentIndexes2 = ArrayList<Int>()
     var points = Points(arrayListOf(), arrayListOf())
-
-
-
 
     private val paint = Paint().apply {
         color = drawColor
