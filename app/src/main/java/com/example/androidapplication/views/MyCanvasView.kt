@@ -36,6 +36,8 @@ class MyCanvasView(context: Context) : View(context) {
     private var lineSegmentIndexes2 = ArrayList<Int>()
     var points = Points(arrayListOf(), arrayListOf())
 
+    //var model: MyViewModel = ViewModelProviders.of(this).get(MyViewModel::class.java)
+
     private val paint = Paint().apply {
         color = drawColor
         isAntiAlias = true
