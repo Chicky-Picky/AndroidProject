@@ -44,23 +44,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun undoView(view: View) {
-
-        TempClass.listsOfPoints[TempClass.currentLists].clear()
-        if (TempClass.lineDebug[TempClass.lineDebug.size - 1] == 1)
-        {
-            TempClass.lineSegments.removeAt(TempClass.lineSegments.size - 1)
+        if (TempClass.currentLists >= 0 && TempClass.lineDebug.size - 2 >= 0 && TempClass.shapes.shapes.size - 1 >= 0) {
+            TempClass.listsOfPoints[TempClass.currentLists].clear()
+            if (TempClass.lineDebug[TempClass.lineDebug.size - 1] == 1) {
+                TempClass.lineSegments.removeAt(TempClass.lineSegments.size - 1)
+            }
+            TempClass.lineDebug.removeAt(TempClass.lineDebug.size - 1)
+            if (TempClass.lineDebug[TempClass.lineDebug.size - 1] == 1) {
+                TempClass.lineSegments.removeAt(TempClass.lineSegments.size - 1)
+            }
+            TempClass.lineDebug.removeAt(TempClass.lineDebug.size - 1)
+            TempClass.shapes.shapes.removeAt(TempClass.shapes.shapes.size - 1)
+            TempClass.shapes.shapeType.removeAt(TempClass.shapes.shapeType.size - 1)
+            TempClass.currentPoints--
+            TempClass.currentLists--
+            myView.invalidate()
         }
-        TempClass.lineDebug.removeAt(TempClass.lineDebug.size - 1)
-        if (TempClass.lineDebug[TempClass.lineDebug.size - 1] == 1)
-        {
-            TempClass.lineSegments.removeAt(TempClass.lineSegments.size - 1)
-        }
-        TempClass.lineDebug.removeAt(TempClass.lineDebug.size - 1)
-        TempClass.shapes.shapes.removeAt(TempClass.shapes.shapes.size - 1)
-        TempClass.shapes.shapeType.removeAt(TempClass.shapes.shapeType.size - 1)
-        TempClass.currentPoints--
-        TempClass.currentLists--
-        myView.invalidate()
     }
 
 
