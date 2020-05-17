@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         TempClass.currentLists = -1
         TempClass.lineSegments.clear()
         TempClass.shapes = Points(arrayListOf(), arrayListOf())
-        TempClass.manyPaths.clear()
+        TempClass.paths.reset()
         myView.invalidate()
     }
 
