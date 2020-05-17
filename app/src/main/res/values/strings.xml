@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">AndroidApplication</string>
     <string name="description">To start drawing swipe across the screen</string>
-    <string name="description2">Enjoy the drawing!</string>
+    <string name="descrMode">Make your drawing visible/invisible</string>
+    <string name="descrUndo">Remove last recognized shape</string>
+    <string name="descrClearAll">Remove everything from the screen</string>
+    <string name="descrClear">Remove all your drawings from the screen</string>
     <string name="undoText">Undo</string>
     <string name="clearAllText">Clear All</string>
     <string name="clearText">Clear</string>

@@ -43,6 +43,7 @@
         >
 
         <Button
+            android:contentDescription="@string/descrMode"
             android:id="@+id/mode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,6 +53,7 @@
             android:text="@string/modeText" />
 
         <Button
+            android:contentDescription="@string/descrUndo"
             android:id="@+id/undo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -61,6 +63,7 @@
             android:text="@string/undoText" />
 
         <Button
+            android:contentDescription="@string/descrClearAll"
             android:id="@+id/clearAll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -70,6 +73,7 @@
             android:text="@string/clearAllText" />
 
         <Button
+            android:contentDescription="@string/descrClear"
             android:id="@+id/clear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
