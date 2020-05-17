@@ -77,7 +77,7 @@ class MyCanvasView @JvmOverloads constructor(context: Context, attrs: AttributeS
 
     private fun distCheck (x: ArrayList<Point>): ArrayList<Point>{
         val y: ArrayList<Point> = arrayListOf(Point(0.0, 0.0), Point(0.0, 0.0))
-        var d = 20.0
+        var d = 38.0
         for (i in 0 until lineSegmentsEnds.size)
         {
             val z = lineSegmentsEnds[i]
@@ -88,7 +88,7 @@ class MyCanvasView @JvmOverloads constructor(context: Context, attrs: AttributeS
             }
         }
 
-        d = 20.0
+        d = 38.0
         for (i in 0 until lineSegmentsEnds.size)
         {
             val z = lineSegmentsEnds[i]

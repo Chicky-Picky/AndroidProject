@@ -19,8 +19,8 @@ class MainActivity : AppCompatActivity() {
         //setContentView(myCanvasView)
         setContentView(R.layout.activity_main)
 
-        var model: MyViewModel = ViewModelProviders.of(this).get(
-            MyViewModel::class.java)
+        //var model: MyViewModel = ViewModelProviders.of(this).get(
+        //   MyViewModel::class.java)
         //var listOfListOfPoints = model.getListOfListOfPoints()
     }
 
