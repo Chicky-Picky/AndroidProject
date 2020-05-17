@@ -15,7 +15,7 @@ class ShapeType(private var points: Points) : ShapeVisitor {
     override fun visit(undefined: Undefined) {
         val x = ArrayList<Point>()
         val s = "undefine"
-        redef(x, s)
+        //redef(x, s)
 
     }
 
