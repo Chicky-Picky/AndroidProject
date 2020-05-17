@@ -3,6 +3,7 @@
     <string name="description">To start drawing swipe across the screen</string>
     <string name="description2">Enjoy the drawing!</string>
     <string name="undoText">Undo</string>
+    <string name="clearAllText">Clear All</string>
     <string name="clearText">Clear</string>
     <string name="modeText">Mode</string>
 </resources>

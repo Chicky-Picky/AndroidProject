@@ -43,6 +43,15 @@
         >
 
         <Button
+            android:id="@+id/mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/backColor"
+            android:onClick="changeMode"
+            android:text="@string/modeText" />
+
+        <Button
             android:id="@+id/undo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -50,6 +59,15 @@
             android:background="@color/backColor"
             android:onClick="undoView"
             android:text="@string/undoText" />
+
+        <Button
+            android:id="@+id/clearAll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/backColor"
+            android:onClick="clearAllView"
+            android:text="@string/clearAllText" />
 
         <Button
             android:id="@+id/clear"
@@ -60,14 +78,6 @@
             android:onClick="clearView"
             android:text="@string/clearText" />
 
-        <Button
-            android:id="@+id/mode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/backColor"
-            android:onClick="changeMode"
-            android:text="@string/modeText" />
 
     </LinearLayout>
 

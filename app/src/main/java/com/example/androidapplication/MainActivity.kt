@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         myView.invalidate()
     }
 
-    fun clearView(view: View) {
+    fun clearAllView(view: View) {
         TempClass.listsOfPoints.clear()
         TempClass.currentPoints = 0
         TempClass.currentLists = -1
@@ -40,6 +40,13 @@ class MainActivity : AppCompatActivity() {
         TempClass.paths.reset()
         myView.invalidate()
     }
+
+    fun clearView(view: View) {
+        TempClass.paths.reset()
+        myView.invalidate()
+    }
+
+
 
     fun undoView(view: View) {
         if (TempClass.currentLists >= 0 && TempClass.lineDebug.size - 2 >= 0 && TempClass.shapes.shapes.size - 1 >= 0) {
