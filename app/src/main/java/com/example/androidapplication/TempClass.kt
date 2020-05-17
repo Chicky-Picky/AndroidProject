@@ -8,7 +8,8 @@ object TempClass {
     var listsOfPoints = ArrayList<ArrayList<Point>>()
     var currentPoints = 0
     var currentLists = -1
-    var path = Path()
+    var paths = Path()
+    var manyPaths = ArrayList<Path>()
     var lineSegments = ArrayList<Point>()
     var lineDebug = ArrayList<Int>()
     var shapes = Points(arrayListOf(), arrayListOf())

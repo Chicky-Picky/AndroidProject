@@ -3,7 +3,6 @@ package com.example.androidapplication
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProviders
 import com.example.algo.Points
 import com.example.androidapplication.views.MyCanvasView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -29,7 +28,6 @@ class MainActivity : AppCompatActivity() {
 
     fun changeMode(view: View) {
         TempClass.mode = -TempClass.mode + 1
-        textView.text = TempClass.mode.toString()
         myView.invalidate()
     }
 
@@ -39,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         TempClass.currentLists = -1
         TempClass.lineSegments.clear()
         TempClass.shapes = Points(arrayListOf(), arrayListOf())
-        TempClass.path.reset()
+        TempClass.manyPaths.clear()
         myView.invalidate()
     }
 
@@ -58,6 +56,7 @@ class MainActivity : AppCompatActivity() {
             TempClass.shapes.shapeType.removeAt(TempClass.shapes.shapeType.size - 1)
             TempClass.currentPoints--
             TempClass.currentLists--
+            TempClass.manyPaths.removeAt(TempClass.manyPaths.size - 1)
             myView.invalidate()
         }
     }
